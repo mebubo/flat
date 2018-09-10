@@ -5,5 +5,6 @@ val sparkVersion = "2.1.2"
 libraryDependencies ++= Seq(
   "com.chuusai" %% "shapeless" % "2.3.3",
   "org.typelevel" %% "cats-core" % "1.1.0",
-  "org.apache.spark" %% "spark-sql" % sparkVersion
+  "org.apache.spark" %% "spark-sql" % sparkVersion,
+  "joda-time" % "joda-time" % "2.10"
 )

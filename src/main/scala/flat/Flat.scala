@@ -1,7 +1,9 @@
 package flat
 
+import java.time.LocalDate
+
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
+import org.apache.spark.sql.types._
 import shapeless._
 import shapeless.labelled.FieldType
 
@@ -22,6 +24,11 @@ object Flat {
   implicit val flatString: Flat[String] = new Flat[String] {
     override def row(a: String): Row = Row(a)
     override def schema: StructType = StructType(Seq(StructField("", StringType, nullable = false)))
+  }
+
+  implicit val flatRowLocalDate: Flat[LocalDate] = new Flat[LocalDate] {
+    override def row(t: LocalDate): Row = Row(t)
+    override def schema: StructType = StructType(Seq(StructField("", DateType, nullable = false)))
   }
 
   implicit def flatOption[A](implicit fa: Flat[A]): Flat[Option[A]] = new Flat[Option[A]] {
