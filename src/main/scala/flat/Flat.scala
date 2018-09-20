@@ -6,7 +6,7 @@ import org.joda.time.{LocalDate, LocalTime}
 import shapeless._
 import shapeless.labelled.FieldType
 
-trait Flat[A] {
+trait Flat[A] extends Serializable {
   def row(a: A): Row
   def schema: StructType
 }
