@@ -36,7 +36,7 @@ object Flat {
   }
 
   implicit def flatOption[A](implicit fa: Flat[A]): Flat[Option[A]] = new Flat[Option[A]] {
-    override def row(a: Option[A]): Row = a.fold(Row(Seq.fill(fa.schema.fields.length)(null): _*))(a => fa.row(a))
+    override def row(a: Option[A]): Row = a.fold(Row.fromSeq(Seq.fill(fa.schema.fields.length)(null)))(fa.row)
     override def schema: StructType = {
       val s = fa.schema
       s.copy(fields = s.fields.map(_.copy(nullable = true)))
