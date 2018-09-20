@@ -1,6 +1,7 @@
 package flat
 
-import org.apache.spark.sql.Row
+import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.spark.sql.types._
 import org.joda.time.{LocalDate, LocalTime}
 import shapeless._
@@ -17,6 +18,10 @@ object Flat {
 
   def prepend(a: String, b: String, sep: String = "."): String = {
     if (b.isEmpty) a else s"$a$sep$b"
+  }
+
+  def toDF[A](s: SparkSession, rdd: RDD[A])(implicit f: Flat[A]): DataFrame = {
+    s.createDataFrame(rdd.map(f.row), f.schema)
   }
 
   implicit val flatInt: Flat[Int] = new Flat[Int] {
