@@ -15,6 +15,10 @@ object Flat {
 
   def apply[A](implicit f: Flat[A]): Flat[A] = f
 
+  def prepend(a: String, b: String, sep: String = "."): String = {
+    if (b.isEmpty) a else s"$a$sep$b"
+  }
+
   implicit val flatInt: Flat[Int] = new Flat[Int] {
     override def row(a: Int): Row = Row(a)
     override def schema: StructType = StructType(Seq(StructField("", IntegerType, nullable = false)))
@@ -56,7 +60,7 @@ object Flat {
 
       override def schema: StructType = {
         val fieldName: String = witness.value.name
-        val h: Array[StructField] = hi.value.schema.fields.map(f => f.copy(name = s"$fieldName.${f.name}"))
+        val h: Array[StructField] = hi.value.schema.fields.map(f => f.copy(name = prepend(fieldName, f.name)))
         val t: Array[StructField] = ti.schema.fields
         StructType(h ++ t)
       }
